@@ -1,0 +1,72 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+        use_sql_comments: true
+        jdbc:
+          time_zone: Asia/Seoul
+
+#  servlet:
+#    multipart:
+#      max-file-size: 50MB
+#      max-request-size: 50MB
+#      resolve-lazily: true
+#      enabled: true
+#
+#  data:
+#    redis:
+#      host: localhost
+#      port: 6379
+
+#
+#server:
+#  servlet:
+#    context-path: /api
+
+springdoc:
+  swagger-ui:
+    path: /swagger
+    groups-order: DESC
+    tags-sorter: alpha
+    operations-sorter: method
+
+#cloud:
+#  aws:
+#    credentials:
+#      access-key: ${aws_access}
+#      secret-key: ${aws_secret}
+#    region:
+#      static: ap-northeast-2
+#      # 리전 서울로 설정
+#    s3:
+#      bucket: footlog-bucket
+#
+#naverApi:
+#  clientId: ${NAVER_ClientID}
+#  clientSecret: ${NAVER_ClientSecret}
+
+#jwt:
+#  secret: ${secret_key}
+#  access-token-validity: 7200000 # 2 hour
+#  refresh-token-validity: 86400000 # 1 week
+
+#kakao:
+#  client_id: ${REST_API_KEY}
+#  redirect_uri: ${REDIRECT_URI}
+#  token_uri: "https://kauth.kakao.com" # 토큰 발급 요청 URI
+#  user_info_uri: "https://kapi.kakao.com" # 사용자 정보 요청 URI
+#
+#tour_api:
+#  service_key: ${Tour_ServiceKey}
+
