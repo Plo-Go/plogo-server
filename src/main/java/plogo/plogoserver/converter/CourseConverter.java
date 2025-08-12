@@ -1,14 +1,10 @@
 package plogo.plogoserver.converter;
 
-import footlogger.footlog.domain.Course;
-import footlogger.footlog.service.SaveService;
-import footlogger.footlog.utils.CourseResponseData;
-import footlogger.footlog.web.dto.response.CourseDetailDTO;
-import footlogger.footlog.web.dto.response.CourseResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import plogo.plogoserver.domain.Course;
 import plogo.plogoserver.service.SaveService;
+import plogo.plogoserver.utils.CourseResponseData;
 import plogo.plogoserver.web.dto.response.CourseDetailDTO;
 import plogo.plogoserver.web.dto.response.CourseResponseDTO;
 

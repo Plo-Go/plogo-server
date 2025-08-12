@@ -1,9 +1,5 @@
 package plogo.plogoserver.converter;
 
-import footlogger.footlog.domain.CheckCourse;
-import footlogger.footlog.domain.SaveCourse;
-import footlogger.footlog.domain.User;
-import footlogger.footlog.web.dto.response.UserResponseDto;
 import plogo.plogoserver.domain.CheckCourse;
 import plogo.plogoserver.domain.SaveCourse;
 import plogo.plogoserver.domain.User;

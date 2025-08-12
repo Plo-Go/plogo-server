@@ -3,6 +3,7 @@ package plogo.plogoserver.service;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import plogo.plogoserver.converter.AreaConverter;
 import plogo.plogoserver.domain.Sigungu;
 import plogo.plogoserver.repository.SigunguRepository;
 import plogo.plogoserver.web.dto.response.AreaCodeDTO;

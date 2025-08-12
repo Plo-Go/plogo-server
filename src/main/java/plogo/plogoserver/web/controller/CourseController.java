@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import plogo.plogoserver.converter.AreaConverter;
 import plogo.plogoserver.payload.ApiResponse;
 import plogo.plogoserver.payload.code.status.ErrorStatus;
 import plogo.plogoserver.service.AreaService;

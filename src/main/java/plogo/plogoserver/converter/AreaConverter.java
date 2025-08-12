@@ -1,8 +1,5 @@
 package plogo.plogoserver.converter;
 
-import footlogger.footlog.domain.Sigungu;
-import footlogger.footlog.web.dto.response.AreaCodeDTO;
-import footlogger.footlog.web.dto.response.SigunguCodeDTO;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;

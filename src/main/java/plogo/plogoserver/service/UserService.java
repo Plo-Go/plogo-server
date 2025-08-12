@@ -3,6 +3,7 @@ package plogo.plogoserver.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import plogo.plogoserver.converter.UserConverter;
 import plogo.plogoserver.domain.User;
 import plogo.plogoserver.repository.LogRepository;
 import plogo.plogoserver.repository.UserRepository;

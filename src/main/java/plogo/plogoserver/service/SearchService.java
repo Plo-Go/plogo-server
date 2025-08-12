@@ -11,6 +11,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import plogo.plogoserver.domain.User;
 import plogo.plogoserver.repository.UserRepository;
+import plogo.plogoserver.web.dto.response.SearchLogDTO;
 
 
 @Service

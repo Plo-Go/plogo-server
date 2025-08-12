@@ -1,9 +1,5 @@
 package plogo.plogoserver.converter;
 
-import footlogger.footlog.domain.Log;
-import footlogger.footlog.domain.LogPhoto;
-import footlogger.footlog.domain.User;
-import footlogger.footlog.web.dto.response.LogResponseDto;
 import java.util.List;
 import java.util.stream.Collectors;
 import plogo.plogoserver.domain.Log;
