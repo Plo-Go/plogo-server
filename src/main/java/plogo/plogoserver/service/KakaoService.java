@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import plogo.plogoserver.domain.User;
+import plogo.plogoserver.jwt.JwtTokenProvider;
 import plogo.plogoserver.repository.UserRepository;
 import plogo.plogoserver.web.dto.response.KakaoTokenResponseDto;
 import plogo.plogoserver.web.dto.response.KakaoUserInfoResponseDto;
