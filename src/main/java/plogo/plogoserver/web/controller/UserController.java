@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import plogo.plogoserver.payload.ApiResponse;
 import plogo.plogoserver.service.KakaoService;
 import plogo.plogoserver.service.UserService;
+import plogo.plogoserver.web.dto.response.KakaoTokenResponseDto;
+import plogo.plogoserver.web.dto.response.KakaoUserInfoResponseDto;
 import plogo.plogoserver.web.dto.response.UserResponseDto;
 
 @Slf4j

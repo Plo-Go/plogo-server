@@ -14,6 +14,7 @@ import plogo.plogoserver.repository.CourseRepository;
 import plogo.plogoserver.repository.LogPhotoRepository;
 import plogo.plogoserver.repository.LogRepository;
 import plogo.plogoserver.repository.UserRepository;
+import plogo.plogoserver.web.dto.response.LogResponseDto;
 
 @Service
 @RequiredArgsConstructor

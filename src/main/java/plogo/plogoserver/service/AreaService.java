@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import plogo.plogoserver.domain.Sigungu;
 import plogo.plogoserver.repository.SigunguRepository;
+import plogo.plogoserver.web.dto.response.AreaCodeDTO;
+import plogo.plogoserver.web.dto.response.SigunguCodeDTO;
 
 @Service
 @RequiredArgsConstructor

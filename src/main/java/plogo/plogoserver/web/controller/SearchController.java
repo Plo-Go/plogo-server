@@ -18,6 +18,10 @@ import plogo.plogoserver.repository.CourseRepository;
 import plogo.plogoserver.service.AreaService;
 import plogo.plogoserver.service.CourseService;
 import plogo.plogoserver.service.SearchService;
+import plogo.plogoserver.web.dto.response.CourseCountDTO;
+import plogo.plogoserver.web.dto.response.CourseResponseDTO;
+import plogo.plogoserver.web.dto.response.SearchLogDTO;
+import plogo.plogoserver.web.dto.response.SigunguCodeDTO;
 
 @RestController
 @RequestMapping("/search")

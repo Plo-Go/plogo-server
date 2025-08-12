@@ -28,6 +28,11 @@ import plogo.plogoserver.repository.RecommendRepository;
 import plogo.plogoserver.repository.SaveRepository;
 import plogo.plogoserver.repository.SigunguRepository;
 import plogo.plogoserver.repository.UserRepository;
+import plogo.plogoserver.web.dto.response.CourseDetailDTO;
+import plogo.plogoserver.web.dto.response.CourseResponseDTO;
+import plogo.plogoserver.web.dto.response.NaverBlogDTO;
+import plogo.plogoserver.web.dto.response.PreferenceRequestBody;
+import plogo.plogoserver.web.dto.response.SaveStatusDTO;
 
 @Service
 @Transactional

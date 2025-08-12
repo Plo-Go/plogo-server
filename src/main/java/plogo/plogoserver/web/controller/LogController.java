@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import plogo.plogoserver.payload.ApiResponse;
 import plogo.plogoserver.service.LogService;
+import plogo.plogoserver.web.dto.response.LogResponseDto;
 
 @RestController
 @RequiredArgsConstructor

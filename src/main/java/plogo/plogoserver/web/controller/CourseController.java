@@ -11,10 +11,18 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import plogo.plogoserver.payload.ApiResponse;
+import plogo.plogoserver.payload.code.status.ErrorStatus;
 import plogo.plogoserver.service.AreaService;
 import plogo.plogoserver.service.CourseService;
 import plogo.plogoserver.service.S3ImageService;
 import plogo.plogoserver.service.SaveService;
+import plogo.plogoserver.web.dto.response.AreaCodeDTO;
+import plogo.plogoserver.web.dto.response.CourseDetailDTO;
+import plogo.plogoserver.web.dto.response.CourseResponseDTO;
+import plogo.plogoserver.web.dto.response.LogIdDTO;
+import plogo.plogoserver.web.dto.response.NaverBlogDTO;
+import plogo.plogoserver.web.dto.response.PreferenceRequestBody;
+import plogo.plogoserver.web.dto.response.SaveStatusDTO;
 
 @RestController
 @RequestMapping("/course")
