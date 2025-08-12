@@ -1,14 +1,11 @@
 package plogo.plogoserver.service;
 
-import footlogger.footlog.converter.SearchLogConverter;
-import footlogger.footlog.domain.User;
-import footlogger.footlog.repository.UserRepository;
-import footlogger.footlog.web.dto.response.SearchLogDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import plogo.plogoserver.converter.SearchLogConverter;
 import plogo.plogoserver.domain.User;
 import plogo.plogoserver.repository.UserRepository;
 import plogo.plogoserver.web.dto.response.SearchLogDTO;
