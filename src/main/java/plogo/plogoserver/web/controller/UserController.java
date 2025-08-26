@@ -66,9 +66,8 @@ public class UserController {
     @Operation(summary = "회원 탈퇴")
     @DeleteMapping("/withdraw")
     public ResponseEntity<ApiResponse<Void>> deleteUser(@RequestHeader("Authorization") String token) {
-        String tokenWithoutBearer = token.substring(7);
         try {
-            userService.deleteUser(tokenWithoutBearer);
+            userService.deleteUser();
             return new ResponseEntity<>(ApiResponse.onSuccess(null), HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(ApiResponse.onFailure(_INTERNAL_SERVER_ERROR, null), HttpStatus.INTERNAL_SERVER_ERROR);

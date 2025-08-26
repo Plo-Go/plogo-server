@@ -29,31 +29,27 @@ public class LogController {
 
     @Operation(summary = "완주한 코스 리스트")
     @GetMapping("/completedList")
-    public ApiResponse<List<LogResponseDto.LogDto>> getCompletedList(@RequestHeader("Authorization") String token){
-        String tokenWithoutBearer = token.substring(7);
-        List<LogResponseDto.LogDto> response = logService.getCompletedList(tokenWithoutBearer);
+    public ApiResponse<List<LogResponseDto.LogDto>> getCompletedList(){
+        List<LogResponseDto.LogDto> response = logService.getCompletedList();
         return ApiResponse.onSuccess(response);
     }
     @Operation(summary = "로그 기록보기")
     @GetMapping("/detail/{logId}")
-    public ApiResponse<LogResponseDto.LogDetailDto> getLogDetail(@RequestHeader("Authorization") String token, @PathVariable("logId") Long logId){
-        String tokenWithoutBearer = token.substring(7);
-        LogResponseDto.LogDetailDto response = logService.getLogDetail(tokenWithoutBearer, logId);
+    public ApiResponse<LogResponseDto.LogDetailDto> getLogDetail(@PathVariable("logId") Long logId){
+        LogResponseDto.LogDetailDto response = logService.getLogDetail(logId);
         return ApiResponse.onSuccess(response);
     }
 
     @Operation(summary = "로그 기록 업데이트")
     @PatchMapping(value = "update/{logId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse<LogResponseDto.LogDetailDto>> updateLog(
-            @RequestHeader("Authorization") String token,
             @PathVariable("logId") Long logId,
             @RequestParam(required = false) String logContent,
             @RequestParam(required = false) List<String> existingUrls,
             @RequestPart(required = false) List<MultipartFile> newImages
     ) {
         try{
-            String tokenWithoutBearer = token.substring(7);
-            LogResponseDto.LogDetailDto response = logService.updateLog(tokenWithoutBearer, logId, logContent, existingUrls, newImages);
+            LogResponseDto.LogDetailDto response = logService.updateLog(logId, logContent, existingUrls, newImages);
             return new ResponseEntity<>(ApiResponse.onSuccess(response), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(ApiResponse.onFailure(_INTERNAL_SERVER_ERROR, null), HttpStatus.INTERNAL_SERVER_ERROR);

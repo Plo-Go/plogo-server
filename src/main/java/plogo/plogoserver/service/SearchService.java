@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import plogo.plogoserver.converter.SearchLogConverter;
 import plogo.plogoserver.domain.User;
 import plogo.plogoserver.repository.UserRepository;
+import plogo.plogoserver.utils.UserHelper;
 import plogo.plogoserver.web.dto.response.SearchLogDTO;
 
 
@@ -16,6 +17,7 @@ import plogo.plogoserver.web.dto.response.SearchLogDTO;
 public class SearchService {
     private final UserRepository userRepository;
     private final RedisTemplate<String, String> redisTemplate;
+    private final UserHelper userHelper;
 
     //검색어 저장 기능
     public void saveRecentSearchLog(User user, String keyword) {
@@ -36,9 +38,8 @@ public class SearchService {
     }
 
     //검색 기록 조회
-    public List<SearchLogDTO> getRecentSearchLogs(String token) {
-        User user = userRepository.findByAccessToken(token)
-                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+    public List<SearchLogDTO> getRecentSearchLogs() {
+        User user = userHelper.getAuthenticatedUser();
 
         String key = "SearchLog" + user.getId();
 
@@ -49,9 +50,8 @@ public class SearchService {
                 .collect(Collectors.toList());
     }
 
-    public Long deleteRecentSearchLog(String token, String keyword) {
-        User user = userRepository.findByAccessToken(token)
-                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+    public Long deleteRecentSearchLog(String keyword) {
+        User user = userHelper.getAuthenticatedUser();
 
         String key = "SearchLog" + user.getId();
 

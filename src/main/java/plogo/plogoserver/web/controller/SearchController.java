@@ -35,10 +35,8 @@ public class SearchController {
     @Operation(summary = "최근 검색어 조회")
     @GetMapping("/recent")
     public ApiResponse<List<SearchLogDTO>> findRecentSearchLog(
-            @RequestHeader("Authorization") String token
     ) {
-        String tokenWithoutBearer = token.substring(7);
-        List<SearchLogDTO> recentSearchLogList = searchService.getRecentSearchLogs(tokenWithoutBearer);
+        List<SearchLogDTO> recentSearchLogList = searchService.getRecentSearchLogs();
 
         return ApiResponse.onSuccess(recentSearchLogList);
     }
@@ -46,16 +44,14 @@ public class SearchController {
     @Operation(summary = "검색어 삭제")
     @PatchMapping("/delete/{keyword}")
     public ApiResponse<CourseCountDTO> deleteSearchLog(
-            @RequestHeader("Authorization") String token,
             @PathVariable(value = "keyword") String keyword
     ) {
-        String tokenWithoutBearer = token.substring(7);
 
         try {
             String decodedKeyword = URLDecoder.decode(keyword, "UTF-8");
 
             return ApiResponse.onSuccess(CourseCountDTO.builder()
-                    .Count(searchService.deleteRecentSearchLog(tokenWithoutBearer, decodedKeyword))
+                    .Count(searchService.deleteRecentSearchLog(decodedKeyword))
                     .build());
 
         } catch (UnsupportedEncodingException e) {
@@ -68,15 +64,13 @@ public class SearchController {
     @Operation(summary = "코스 검색")
     @GetMapping("/course/{keyword}")
     public ApiResponse<List<CourseResponseDTO>> searchCourse(
-            @RequestHeader("Authorization") String token,
             @PathVariable(value = "keyword") String keyword
     ) {
-        String tokenWithoutBearer = token.substring(7);
 
         try {
             String decodedKeyword = URLDecoder.decode(keyword, "UTF-8");
 
-            return ApiResponse.onSuccess(courseService.getCourseByKeyword(tokenWithoutBearer, decodedKeyword));
+            return ApiResponse.onSuccess(courseService.getCourseByKeyword(decodedKeyword));
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -89,7 +83,6 @@ public class SearchController {
     @Operation(summary = "시군구 정보 전체 조회")
     @GetMapping(value = "sigungu_code")
     public ApiResponse<List<SigunguCodeDTO>> getSigunguInfo(
-            @RequestHeader("Authorization") String token
     ) {
         return ApiResponse.onSuccess(areaService.getSigunguInfo());
     }

@@ -35,6 +35,7 @@ import plogo.plogoserver.utils.CourseResponseData;
 import plogo.plogoserver.utils.NaverBlog;
 import plogo.plogoserver.utils.RecommendSystem;
 import plogo.plogoserver.utils.TourApi;
+import plogo.plogoserver.utils.UserHelper;
 import plogo.plogoserver.web.dto.response.CourseDetailDTO;
 import plogo.plogoserver.web.dto.response.CourseResponseDTO;
 import plogo.plogoserver.web.dto.response.NaverBlogDTO;
@@ -61,11 +62,11 @@ public class CourseService {
     private final SearchService searchService;
     private final TourApi tourApi;
     private final SigunguRepository sigunguRepository;
+    private final UserHelper userHelper;
 
     //지역기반으로 코스를 받아 옴
-    public List<CourseResponseDTO> getByAreaName(String token, Long areaCode) {
-        User user = userRepository.findByAccessToken(token)
-                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+    public List<CourseResponseDTO> getByAreaName(Long areaCode) {
+        User user = userHelper.getAuthenticatedUser();
 
         //지역 전체를 뜻하는 0번을 입력할 경우 전체 코스를 가져옴
         if (areaCode == 0) {
@@ -85,9 +86,8 @@ public class CourseService {
     }
 
     //클릭 시 상세 조회
-    public CourseDetailDTO getCourseDetail(String token, Long courseId) {
-        User user = userRepository.findByAccessToken(token)
-                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+    public CourseDetailDTO getCourseDetail(Long courseId) {
+        User user = userHelper.getAuthenticatedUser();
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new IllegalArgumentException("코스를 찾을 수 없습니다."));
         Boolean isSave = saveService.getSaveStatus(course.getId(), user.getId());
@@ -99,9 +99,8 @@ public class CourseService {
     }
 
     //클릭 때 마다 코스를 저장하고 취소하는 토글 기능
-    public SaveStatusDTO toggleSaveCourse(String token, Long courseId) {
-        User user = userRepository.findByAccessToken(token)
-                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+    public SaveStatusDTO toggleSaveCourse(Long courseId) {
+        User user = userHelper.getAuthenticatedUser();
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new IllegalArgumentException("코스를 찾을 수 없습니다."));
         Optional<SaveCourse> saveCourse = saveRepository.findByCourseIdAndUserId(courseId, user.getId());
@@ -143,9 +142,8 @@ public class CourseService {
     }
 
     //코스 완주 할 경우 저장
-    public Long completeCourse(String token, Long courseId) {
-        User user = userRepository.findByAccessToken(token)
-                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+    public Long completeCourse(Long courseId) {
+        User user = userHelper.getAuthenticatedUser();
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new IllegalArgumentException("코스를 찾을 수 없습니다."));
 
@@ -166,9 +164,8 @@ public class CourseService {
     }
 
     //플라스크 서버로 분석요청 보낸 후 코스id 받아옴
-    public List<CourseResponseDTO> analyzePreference(String token, PreferenceRequestBody request) {
-        User user = userRepository.findByAccessToken(token)
-                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+    public List<CourseResponseDTO> analyzePreference(PreferenceRequestBody request) {
+        User user = userHelper.getAuthenticatedUser();
 
         //기존에 저장되어 있는 코스가 있으면 삭제
         recommendRepository.deleteByUserId(user.getId());
@@ -200,9 +197,8 @@ public class CourseService {
     }
 
     //디비에 있는 있는 추천 코스 반환
-    public List<CourseResponseDTO> getRecommendCourse(String token) {
-        User user = userRepository.findByAccessToken(token)
-                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+    public List<CourseResponseDTO> getRecommendCourse() {
+        User user = userHelper.getAuthenticatedUser();
 
         return recommendRepository.findByUserId(user.getId()).stream()
                 .map(RecommendCourse::getCourse)
@@ -212,9 +208,8 @@ public class CourseService {
     }
 
     //저장한 코스 반환
-    public List<CourseResponseDTO> getSaveCourse(String token) {
-        User user = userRepository.findByAccessToken(token)
-                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+    public List<CourseResponseDTO> getSaveCourse() {
+        User user = userHelper.getAuthenticatedUser();
 
         return saveRepository.findByUserId(user.getId()).stream()
                 .map(SaveCourse::getCourse)
@@ -224,9 +219,8 @@ public class CourseService {
     }
 
     //완주한 코스 반환
-    public List<CourseResponseDTO> getCompleteCourse(String token) {
-        User user = userRepository.findByAccessToken(token)
-                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+    public List<CourseResponseDTO> getCompleteCourse() {
+        User user = userHelper.getAuthenticatedUser();
 
         return logRepository.findLogByUserId(user.getId()).stream()
                 .map(Log::getCourse)
@@ -236,9 +230,8 @@ public class CourseService {
     }
 
     //최근 핫한 코스
-    public List<CourseResponseDTO> getHotCourses(String token) {
-        User user = userRepository.findByAccessToken(token)
-                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+    public List<CourseResponseDTO> getHotCourses() {
+        User user = userHelper.getAuthenticatedUser();
 
         return courseRepository.findCourseOrderByImage(10).stream()
                 .map(course -> courseConverter
@@ -247,9 +240,8 @@ public class CourseService {
     }
 
     //코스 검색 기능
-    public List<CourseResponseDTO> getCourseByKeyword(String token, String keyword) {
-        User user = userRepository.findByAccessToken(token)
-                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+    public List<CourseResponseDTO> getCourseByKeyword(String keyword) {
+        User user = userHelper.getAuthenticatedUser();
 
         searchService.saveRecentSearchLog(user, keyword);
 
@@ -313,9 +305,8 @@ public class CourseService {
     }
 
     //최근 확인한 코스 데이터 조회
-    public List<CourseResponseDTO> getRecentCourse(String token) {
-        User user = userRepository.findByAccessToken(token)
-                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+    public List<CourseResponseDTO> getRecentCourse() {
+        User user = userHelper.getAuthenticatedUser();
 
         String key = "Course" + user.getId();
 
@@ -332,9 +323,8 @@ public class CourseService {
     }
 
     //시군구별 코스 조회
-    public List<CourseResponseDTO> getSigunguCourse(String token, Long sigunguId) {
-        User user = userRepository.findByAccessToken(token)
-                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+    public List<CourseResponseDTO> getSigunguCourse(Long sigunguId) {
+        User user = userHelper.getAuthenticatedUser();
 
         Sigungu sigungu = sigunguRepository.findById(sigunguId)
                 .orElseThrow(() -> new IllegalArgumentException("시군구를 찾을 수 없습니다."));

@@ -35,9 +35,8 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUser(String token) {
-        User user = userRepository.findByAccessToken(token)
-                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+    public void deleteUser() {
+        User user = userHelper.getAuthenticatedUser();
 
         //redis 서버에 저장된 정보 삭제
         courseRedisTemplate.delete("Course" + user.getId());

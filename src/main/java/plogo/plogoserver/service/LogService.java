@@ -15,6 +15,7 @@ import plogo.plogoserver.repository.CourseRepository;
 import plogo.plogoserver.repository.LogPhotoRepository;
 import plogo.plogoserver.repository.LogRepository;
 import plogo.plogoserver.repository.UserRepository;
+import plogo.plogoserver.utils.UserHelper;
 import plogo.plogoserver.web.dto.response.LogResponseDto;
 
 @Service
@@ -25,19 +26,18 @@ public class LogService {
     private final CourseRepository courseRepository;
     private final S3ImageService s3ImageService;
     private final LogPhotoRepository logPhotoRepository;
+    private final UserHelper userHelper;
 
 
     @Transactional
-    public List<LogResponseDto.LogDto> getCompletedList(String token) {
-        User user = userRepository.findByAccessToken(token)
-                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+    public List<LogResponseDto.LogDto> getCompletedList() {
+        User user = userHelper.getAuthenticatedUser();
         return LogConverter.toLogList(user);
     }
 
     @Transactional
-    public LogResponseDto.LogDetailDto getLogDetail(String token, Long logId){
-        User user = userRepository.findByAccessToken(token)
-                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+    public LogResponseDto.LogDetailDto getLogDetail(Long logId){
+        User user = userHelper.getAuthenticatedUser();
         Log log = logRepository.findLogById(logId);
 
         if (log == null) {
@@ -50,9 +50,8 @@ public class LogService {
     }
 
     @Transactional
-    public LogResponseDto.LogDetailDto updateLog(String token, Long logId, String logContent, List<String> existingUrls, List<MultipartFile> newImages) {
-        User user = userRepository.findByAccessToken(token)
-                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+    public LogResponseDto.LogDetailDto updateLog(Long logId, String logContent, List<String> existingUrls, List<MultipartFile> newImages) {
+        User user = userHelper.getAuthenticatedUser();
 
         Log log = logRepository.findById(logId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 로그를 찾을 수 없습니다."));
