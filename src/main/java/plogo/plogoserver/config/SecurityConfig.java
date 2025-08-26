@@ -76,9 +76,8 @@ public CorsConfigurationSource corsConfigurationSource() {
                     exception.authenticationEntryPoint(jwtAuthenticationEntryPoint);
                     exception.accessDeniedHandler(jwtAccessDeniedHandler);
                 })
-                .authorizeRequests(auth -> {
-                    auth.requestMatchers(AUTH_WHITELIST).permitAll();
-                    auth.anyRequest().authenticated();
+                .authorizeHttpRequests(auth -> {
+                    auth.anyRequest().permitAll();
                 })
                 //.cors(withDefaults()) // CORS를 가장 먼저 처리하도록 이동
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

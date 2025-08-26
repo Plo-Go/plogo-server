@@ -11,7 +11,7 @@ import plogo.plogoserver.web.dto.response.PreferenceRequestBody;
 
 @Component
 public class RecommendSystem {
-    @Value("${FLASK_BaseURL}")
+    //@Value("${FLASK_BaseURL}")
     private String baseUrl;
 
     public List<Long> getRecommendations(PreferenceRequestBody request) {

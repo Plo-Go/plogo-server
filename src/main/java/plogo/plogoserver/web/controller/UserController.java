@@ -59,10 +59,8 @@ public class UserController {
 
     @Operation(summary = "유저 정보 조회")
     @GetMapping("/info")
-    public ApiResponse<UserResponseDto.UserInfoDto> getUserInfo(@RequestHeader("Authorization") String token) {
-        String tokenWithoutBearer = token.substring(7);
-        UserResponseDto.UserInfoDto response = userService.getUserInfo(tokenWithoutBearer);
-        return ApiResponse.onSuccess(response);
+    public ApiResponse<UserResponseDto.UserInfoDto> getUserInfo() {
+        return ApiResponse.onSuccess(userService.getUserInfo());
     }
 
     @Operation(summary = "회원 탈퇴")

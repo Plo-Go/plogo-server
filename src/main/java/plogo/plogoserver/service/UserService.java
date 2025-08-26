@@ -8,6 +8,7 @@ import plogo.plogoserver.converter.UserConverter;
 import plogo.plogoserver.domain.User;
 import plogo.plogoserver.repository.LogRepository;
 import plogo.plogoserver.repository.UserRepository;
+import plogo.plogoserver.utils.UserHelper;
 import plogo.plogoserver.web.dto.response.UserResponseDto;
 
 @Service
@@ -17,6 +18,7 @@ public class UserService {
     private final LogRepository logRepository;
     private final RedisTemplate<String, Long> courseRedisTemplate;
     private final RedisTemplate<String, String> searchRedisTemplate;
+    private final UserHelper userHelper;
 
     public User findByKakaoId(Long kakaoId) {
         return userRepository.findByKakaoId(kakaoId).orElse(null);
@@ -27,9 +29,8 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponseDto.UserInfoDto getUserInfo(String token) {
-        User user = userRepository.findByAccessToken(token)
-                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+    public UserResponseDto.UserInfoDto getUserInfo() {
+        User user = userHelper.getAuthenticatedUser();
         return UserConverter.toUserInfo(user);
     }
 

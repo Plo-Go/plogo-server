@@ -19,7 +19,14 @@ public class SwaggerConfig {
                 .info(new Info()
                         .title("PloGo API 문서")
                         .version("v1.0")
-                        .description("PloGo API 명세서"));
+                        .description("PloGo API 명세서"))
+                .components(new Components()
+                        .addSecuritySchemes("bearerAuth",
+                                new SecurityScheme()
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")))
+                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"));
     }
 //    @Bean
 //    public OpenAPI PloGoAPI() {
