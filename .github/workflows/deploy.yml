@@ -26,9 +26,8 @@ jobs:
       - name: Make application.yml
         run: |
           cd ./src/main/resources
-          cat <<'EOF' > application.yml
-          ${{ secrets.APPLICATION_YML }}
-          EOF
+          touch ./application.yml
+          echo "${{ secrets.APPLICATION_YML }}" > ./application.yml
         shell: bash
 
       # Gradle로 빌드
