@@ -19,7 +19,7 @@ import plogo.plogoserver.web.dto.response.UserResponseDto;
 public class JwtTokenProvider {
     private static final String user_id = "userId";
 
-    @Value("${secret_key}")
+    @Value("${jwt.secret}")
     private String JWT_SECRET;
 
     @PostConstruct
