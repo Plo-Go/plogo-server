@@ -20,13 +20,19 @@ public class TourApi {
         this.jacksonObjectMapper = jacksonObjectMapper;
     }
 
+    // 기본 메서드 (기존 유지)
     public String getSigunguCourse(int areaCode, int sigunguCode) {
+        return getSigunguCourse(areaCode, sigunguCode, 1); // 기본적으로 pageNo=1
+    }
+
+    // 새 메서드
+    public String getSigunguCourse(int areaCode, int sigunguCode, int pageNo) {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://apis.data.go.kr/B551011/GreenTourService1/areaBasedList1"
                         + "?serviceKey=" + serviceKey
                         + "&numOfRows=40"
-                        + "&pageNo=1"
+                        + "&pageNo=" + pageNo
                         + "&areaCode=" + areaCode
                         + "&sigunguCode=" + sigunguCode
                         + "&MobileOS=ETC"
@@ -37,14 +43,14 @@ public class TourApi {
 
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            String jsonResponse = response.body();
-
-            return jsonResponse;
-
+            System.out.println("📡 API Response (" + areaCode + "," + sigunguCode + ", page=" + pageNo + "): "
+                    + response.body().substring(0, Math.min(200, response.body().length()))); // 앞부분만 찍기
+            return response.body();
         } catch (IOException | InterruptedException e) {
-            return e.getMessage();
+            e.printStackTrace();
+            return null;
         }
-
-
     }
+
+
 }

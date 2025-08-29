@@ -6,4 +6,5 @@ import plogo.plogoserver.domain.Sigungu;
 
 public interface SigunguRepository extends JpaRepository<Sigungu, Long> {
     List<Sigungu> findByAreaCodeAndSigunguCode(Long areaCode, Long sigunguCode);
+    boolean existsByAreaCodeAndSigunguCode(int areaCode, int sigunguCode);
 }

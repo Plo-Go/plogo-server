@@ -3,7 +3,7 @@ package plogo.plogoserver.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -34,6 +34,7 @@ import plogo.plogoserver.repository.UserRepository;
 import plogo.plogoserver.utils.CourseResponseData;
 import plogo.plogoserver.utils.NaverBlog;
 import plogo.plogoserver.utils.RecommendSystem;
+import plogo.plogoserver.utils.TestResponse;
 import plogo.plogoserver.utils.TourApi;
 import plogo.plogoserver.utils.UserHelper;
 import plogo.plogoserver.web.dto.response.CourseDetailDTO;
@@ -63,6 +64,8 @@ public class CourseService {
     private final TourApi tourApi;
     private final SigunguRepository sigunguRepository;
     private final UserHelper userHelper;
+
+    private final ObjectMapper objectMapper;
 
     //지역기반으로 코스를 받아 옴
     public List<CourseResponseDTO> getByAreaName(Long areaCode) {
@@ -285,6 +288,75 @@ public class CourseService {
                         .toResponseDTO(course, saveService.getSaveStatus(course.getId(), user.getId())))
                 .toList();
     }
+
+    // 인증 필요 없는 저장용 메서드
+    //@Transactional
+    public void saveSigunguCourses(int areaCode, int sigunguCode) {
+        int pageNo = 1;
+        int totalCount = 0;
+
+        do {
+            String jsonResponse = tourApi.getSigunguCourse(areaCode, sigunguCode, pageNo);
+
+            // JSON 응답 여부 확인
+            if (jsonResponse == null || !jsonResponse.trim().startsWith("{")) {
+                System.err.println("⚠️ JSON 아님, 원본 응답 출력 → " + jsonResponse);
+                break; // return ❌ → break (현재 시군구만 건너뛰고 다음 진행)
+            }
+
+            try {
+                TestResponse testResponse = objectMapper.readValue(jsonResponse, TestResponse.class);
+
+                if (testResponse.getResponse() == null
+                        || testResponse.getResponse().getBody() == null
+                        || testResponse.getResponse().getBody().getItems() == null
+                        || testResponse.getResponse().getBody().getItems().getItem() == null) {
+                    System.out.println("⚠️ No items found → areaCode=" + areaCode + ", sigunguCode=" + sigunguCode + ", page=" + pageNo);
+                    break; // return ❌ → break (현재 시군구 끝내고 다음 시군구로)
+                }
+
+                List<TestResponse.Item> items = testResponse.getResponse().getBody().getItems().getItem();
+                totalCount = testResponse.getResponse().getBody().getTotalCount();
+
+                for (TestResponse.Item item : items) {
+                    Long courseId = Long.valueOf(item.getContentid());
+
+                    if (courseRepository.existsById(courseId)) {
+                        System.out.println("⚠️ Already exists, skip: " + courseId);
+                        continue;
+                    }
+
+                    Course course = Course.builder()
+                            .id(courseId)
+                            .image(item.getMainimage())
+                            .address(item.getAddr())
+                            .phoneNum(item.getTel())
+                            .phoneName(item.getTelname())
+                            .name(item.getTitle())
+                            .content(item.getSummary())
+                            .areaCode(Integer.parseInt(item.getAreacode()))
+                            .sigunguCode(Integer.parseInt(item.getSigungucode()))
+                            .charge(item.getCharge())
+                            .build();
+
+                    courseRepository.save(course);
+                    //courseRepository.flush();
+                    System.out.println("✅ Course saved: " + course.getName());
+                }
+
+                pageNo++;
+
+            } catch (Exception e) {
+                System.err.println("❌ 파싱 실패 → areaCode=" + areaCode + ", sigunguCode=" + sigunguCode + ", page=" + pageNo);
+                e.printStackTrace();
+                break; // return ❌ → break (현재 시군구만 중단)
+            }
+
+        } while (pageNo * 40 < totalCount); // numOfRows=40 기준
+    }
+
+
+
 
     //최근 확인한 코스 데이터 저장
     public void saveRecentCourse(User user, Long courseId) {
