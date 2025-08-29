@@ -69,7 +69,8 @@ public class S3ImageService {
         //원본 파일명
         String originalFilename = image.getOriginalFilename();
         //확장자 명
-        String extension = originalFilename.substring(originalFilename.lastIndexOf('.'));
+        //String extension = originalFilename.substring(originalFilename.lastIndexOf('.'));
+        String extension = originalFilename.substring(originalFilename.lastIndexOf('.') + 1).toLowerCase();
         //변경된 파일명
         String s3FileName = UUID.randomUUID().toString().substring(0, 10) + originalFilename;
 
@@ -89,13 +90,14 @@ public class S3ImageService {
             //S3로 putObject 할 때 사용할 요청 객체
             //생성자 : bucket 이름, 파일 명, byteInputStream, metadata
             PutObjectRequest putObjectRequest =
-                    new PutObjectRequest(bucketName, s3FileName, byteArrayInputStream, metadata)
-                            .withCannedAcl(CannedAccessControlList.PublicRead);
+                    new PutObjectRequest(bucketName, s3FileName, byteArrayInputStream, metadata);
+                            //.withCannedAcl(CannedAccessControlList.PublicRead);
 
             //실제로 S3에 이미지 데이터를 넣는 부분
             amazonS3.putObject(putObjectRequest);
         } catch (Exception e) {
-            throw new IllegalArgumentException("데이터 오류");
+            e.printStackTrace();
+            throw new IllegalArgumentException("S3 업로드 실패");
         } finally {
             byteArrayInputStream.close();
             is.close();
