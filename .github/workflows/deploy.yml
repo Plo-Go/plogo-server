@@ -37,11 +37,18 @@ jobs:
           ./gradlew clean build -x test
 
       # Docker 이미지 빌드 및 푸시 (🚨 `--build-arg` 추가!)
+#      - name: Docker build & push to Docker Hub
+#        run: |
+#          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+#          docker build --no-cache -t ${{ secrets.DOCKER_REPO }}:latest .
+#          docker push ${{ secrets.DOCKER_REPO }}:latest
       - name: Docker build & push to Docker Hub
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build --no-cache -t ${{ secrets.DOCKER_REPO }}:latest .
-          docker push ${{ secrets.DOCKER_REPO }}:latest   
+          docker buildx create --use
+          docker buildx build --platform linux/amd64,linux/arm64 \
+            -t ${{ secrets.DOCKER_REPO }}:latest \
+            --push .
 
       # 서버 배포
       - name: Deploy to server with Docker
@@ -52,7 +59,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             sudo docker-compose down
-            sudo docker pull ${{ secrets.DOCKER_REPO }}
+            sudo docker pull ${{ secrets.DOCKER_REPO }}:latest
             sudo docker-compose -f docker-compose.yml up -d
             sudo docker image prune -f
       # jar 파일명 확인

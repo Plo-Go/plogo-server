@@ -54,7 +54,7 @@ cloud:
       static: ap-northeast-2
       # 리전 서울로 설정
     s3:
-      bucket: plogo
+      bucket: plogo-bucket
 
 naverApi:
   clientId: ${NAVER_ClientID}
