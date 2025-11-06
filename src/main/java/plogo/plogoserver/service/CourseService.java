@@ -3,6 +3,7 @@ package plogo.plogoserver.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.Console;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -175,6 +176,8 @@ public class CourseService {
 
         //플라스크 서버에서 코스 분석 후 반환
         List<Long> courseIds = recommendSystem.getRecommendations(request);
+
+        System.out.println("coursIds:" + courseIds);
 
         List<Course> courses = courseIds.stream()
                 .map(courseRepository::findById)

@@ -12,7 +12,7 @@ import plogo.plogoserver.web.dto.response.PreferenceRequestBody;
 @Component
 public class RecommendSystem {
     //@Value("${FLASK_BaseURL}")
-    private String baseUrl;
+    private final String baseUrl = "http://3.39.43.241:5050/api";
 
     public List<Long> getRecommendations(PreferenceRequestBody request) {
         WebClient webClient = WebClient.builder()

@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -56,6 +57,30 @@ public class UserController {
             return ApiResponse.onFailure(_INTERNAL_SERVER_ERROR, null);
         }
     }
+
+    @CrossOrigin("*")
+    @Operation(summary = "카카오 로그인 (앱용, access token 직접 전달)")
+    @PostMapping("/kakao/login/app")
+    public ApiResponse<UserResponseDto.LoginResultDto> kakaoAppLogin(
+            @RequestParam("accessToken") String accessToken) {
+        try {
+            //String accessToken = requestBody.get("accessToken");
+
+            // access token으로 사용자 정보 조회
+            KakaoUserInfoResponseDto userInfo = kakaoService.getUserInfo(accessToken);
+
+            // 회원가입 또는 로그인 처리
+            UserResponseDto.LoginResultDto loginResultDto = kakaoService.handleUserLogin(userInfo);
+
+            log.info("App login result: {}", loginResultDto);
+            return ApiResponse.onSuccess(loginResultDto);
+
+        } catch (Exception e) {
+            log.error("Kakao app login error: ", e);
+            return ApiResponse.onFailure(_INTERNAL_SERVER_ERROR, null);
+        }
+    }
+
 
     @Operation(summary = "유저 정보 조회")
     @GetMapping("/info")
