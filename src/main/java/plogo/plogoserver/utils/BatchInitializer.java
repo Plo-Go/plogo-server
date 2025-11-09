@@ -9,12 +9,13 @@ import plogo.plogoserver.service.BatchService;
 @RequiredArgsConstructor
 public class BatchInitializer implements CommandLineRunner {
 
-    private final BatchService batchService;
+
+    private final BatchDataService batchDataService; // ✅ 수정됨
 
     @Override
     public void run(String... args) throws Exception {
         System.out.println("🚀 Batch Job Started...");
-        batchService.runSaveAll();
+        batchDataService.runSaveAll(); // ✅ 수정됨
         System.out.println("✅ Batch Job Completed!");
     }
 }
