@@ -39,11 +39,13 @@ server:
     context-path: /api
 
 springdoc:
-  swagger-ui:
-    path: /swagger
-    groups-order: DESC
-    tags-sorter: alpha
-    operations-sorter: method
+  api-docs:
+    path: /api/v3/api-docs
+    swagger-ui:
+      path: /api/swagger
+      groups-order: DESC
+      tags-sorter: alpha
+      operations-sorter: method
 
 cloud:
   aws:
