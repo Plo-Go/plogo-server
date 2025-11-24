@@ -54,6 +54,8 @@ public CorsConfigurationSource corsConfigurationSource() {
 
     config.setAllowedOriginPatterns(List.of(
             "https://*.plogo.store",
+            "https://plogo.store",
+            "https://www.plogo.store",
             "http://localhost:3000"
     ));
 
