@@ -95,6 +95,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // preflight OPTIONS 허용
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/health").permitAll()
                         // 화이트리스트
                         .requestMatchers(AUTH_WHITELIST).permitAll()
                         .anyRequest().authenticated()
