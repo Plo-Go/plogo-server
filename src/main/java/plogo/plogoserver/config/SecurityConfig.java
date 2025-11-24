@@ -51,7 +51,11 @@ public class SecurityConfig {
 public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setMaxAge(3600L);
-    configuration.setAllowedOrigins(List.of("http://localhost:3000", "https://footlog.site", "https://www.footlog.site/user/kakao/callback", "https://www.footlog.site"));
+    configuration.setAllowedOrigins(List.of(
+            "https://www.plogo.store",
+            "https://plogo.store",
+            "http://localhost:3000"   // 개발용 유지
+    ));
 
     configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
     configuration.setAllowedHeaders(List.of(AUTHORIZATION, CONTENT_TYPE, CONTENT_DISPOSITION));
