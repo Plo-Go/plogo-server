@@ -49,20 +49,21 @@ public class SecurityConfig {
 //    }
 @Bean
 public CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setMaxAge(3600L);
-    configuration.setAllowedOrigins(List.of(
-            "https://www.plogo.store",
-            "https://plogo.store",
-            "http://localhost:3000"   // 개발용 유지
+    CorsConfiguration config = new CorsConfiguration();
+    config.setAllowCredentials(true);
+
+    config.setAllowedOriginPatterns(List.of(
+            "https://*.plogo.store",
+            "http://localhost:3000"
     ));
 
-    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-    configuration.setAllowedHeaders(List.of(AUTHORIZATION, CONTENT_TYPE, CONTENT_DISPOSITION));
-    configuration.setExposedHeaders(List.of(AUTHORIZATION, CONTENT_TYPE, CONTENT_DISPOSITION));
+    config.setAllowedHeaders(List.of("*"));
+    config.setAllowedMethods(List.of("*"));
+    config.setExposedHeaders(List.of("*"));
+    config.setMaxAge(3600L);
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
+    source.registerCorsConfiguration("/**", config);
     return source;
 }
 
