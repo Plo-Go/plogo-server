@@ -11,10 +11,10 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 public class NaverBlog {
-    @Value("${NAVER_ClientID}")
+    @Value("${naverApi.clientId}")
     private String clientId;
 
-    @Value("${NAVER_ClientSecret}")
+    @Value("${naverApi.clientSecret}")
     private String clientSecret;
 
     public String search(String keyword) {
